@@ -54,8 +54,8 @@ jobs:
     #  run: cat ./servipagos/coverage.xml
     - name: SonarQube Scan
       uses: sonarsource/sonarqube-scan-action@v2.0.1
-      #with:
-        #projectBaseDir: servipagos
+      with:
+        projectBaseDir: servipagos
 
       env:
         SONAR_HOST_URL: ${{ secrets.SONARQUBE_HOST }}
