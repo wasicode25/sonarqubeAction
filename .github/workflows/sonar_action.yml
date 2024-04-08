@@ -1,0 +1,67 @@
+on:
+  # Trigger analysis when pushing in master or pull requests, and when creating
+  # a pull request. 
+  push:
+    branches:
+      - main
+
+name: SonarQube Scan
+jobs:
+  sonarqube:
+    name: SonarQube Trigger
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checking out
+      uses: actions/checkout@main
+      with:
+        # Disabling shallow clone is recommended for improving relevancy of reporting
+        fetch-depth: 0
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.11
+    - name: Install tox and any other packages
+      run: pip install tox
+    - name: Run tox
+      working-directory: ./
+      #working-directory: ./servipagos
+      run: 
+        tox -e py
+    - name: Copiar directorio
+      working-directory: ./
+      run: |
+        ls
+      #cp /servipagos/coverage.xml .
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: unit_test_coverage
+        #path: ./servipagos/coverage.xml
+        path: coverage.xml
+        
+
+  recuperar_atifact:
+    needs: sonarqube
+
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checking out
+      uses: actions/checkout@main
+    - name: descargando artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: unit_test_coverage
+    - name: pintando coverage
+      run: cat coverage.xml
+    - name: cambiando directorio
+      working-directory: ./
+      run: ls
+    - name: SonarQube Scan
+      uses: sonarsource/sonarqube-scan-action@v2.0.1
+      env:
+        SONAR_HOST_URL: ${{ secrets.SONARQUBE_HOST }}
+        SONAR_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
+
+
+
+
