@@ -51,7 +51,7 @@ jobs:
         name: unit_test_coverage
         path: ./servipagos
     - name: pintando coverage
-      run: cat coverage.xml
+      run: cat ./servipagos/coverage.xml
     - name: SonarQube Scan
       uses: sonarsource/sonarqube-scan-action@v2.0.1
       with:
