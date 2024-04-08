@@ -49,6 +49,7 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: unit_test_coverage
+        path: ./servipagos
     - name: pintando coverage
       run: cat coverage.xml
     - name: SonarQube Scan
