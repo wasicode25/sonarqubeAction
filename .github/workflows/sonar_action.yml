@@ -23,15 +23,10 @@ jobs:
     - name: Install tox and any other packages
       run: pip install tox
     - name: Run tox
-      working-directory: ./
+      working-directory: ./servipagos
       #working-directory: ./servipagos
       run: 
         tox -e py
-    - name: Copiar directorio
-      working-directory: ./
-      run: |
-        ls
-      #cp /servipagos/coverage.xml .
     - name: Archive artifacts
       uses: actions/upload-artifact@v4
       with:
@@ -47,15 +42,15 @@ jobs:
     steps:
     - name: Checking out
       uses: actions/checkout@main
+    - name: cambiando directorio
+      working-directory: ./servipagos
+      run: ls
     - name: descargando artifact
       uses: actions/download-artifact@v4
       with:
         name: unit_test_coverage
     - name: pintando coverage
       run: cat coverage.xml
-    - name: cambiando directorio
-      working-directory: ./
-      run: ls
     - name: SonarQube Scan
       uses: sonarsource/sonarqube-scan-action@v2.0.1
       with:
