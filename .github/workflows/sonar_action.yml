@@ -24,7 +24,6 @@ jobs:
       run: pip install tox
     - name: Run tox
       working-directory: ./servipagos
-      #working-directory: ./servipagos
       run: 
         tox -e py
     - name: Archive artifacts
@@ -57,8 +56,6 @@ jobs:
       uses: sonarsource/sonarqube-scan-action@v2.0.1
       with:
         projectBaseDir: servipagos
-        args: >
-          -Dsonar.python.coverage.reportPaths=coverage.xml
 
       env:
         SONAR_HOST_URL: ${{ secrets.SONARQUBE_HOST }}
